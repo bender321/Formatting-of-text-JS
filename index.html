@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="switch.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <label class="switch">
+    <input type="checkbox">
+    <div class="slider"></div>
+  </label>
+  
+  <div id="InputText" style="padding-top: 70px">
+    <input type="text" id="inText" placeholder="Vložte text...">
+    <input type="number" id="wordCount" placeholder="Počet slov v chlívku?">
+    <input type="number" id="bracketCount" placeholder="Počet zavorek na řádku?">
+    <button onclick="formating()">Format</button>
+  </div>
+  
+  <div id="formatedText" class="row" style="padding-top: 70px">
+    Zde se objeví formatovaný text!
+  </div>
+
+  <script>
+    var switchCheck = false;
+
+    function formating() 
+    {
+      if(switchCheck)
+      {
+        var inText = document.getElementById("inText").value;
+        var wordCount = document.getElementById("wordCount").value;
+        var bracketCount = document.getElementById("bracketCount").value;
+
+        if(inText == "")
+        {
+          alert("Nebyl zadán žádný text!")
+        }
+        else
+        {
+          var pipeChar = '<span style="color:black">|</span>';
+          var result = "";
+          var splittedWords = inText.split(" ");
+          var counterWord = 0;
+          var couterBracket = 0;
+
+          if (wordCount > 0 && bracketCount > 0)
+          {
+            for (i=0; i < splittedWords.length; i++)
+            {
+              if (counterWord == 0)
+              {
+                result += " " + pipeChar;
+              }
+
+              result += " " + splittedWords[i];
+              counterWord++;
+
+              if (counterWord == wordCount)
+              {
+                counterWord = 0;
+                couterBracket++;
+              }
+
+              if (couterBracket == bracketCount)
+              {
+                result += " " + pipeChar + "<br>";
+                couterBracket = 0;
+              }
+            }
+          }
+
+          if ((bracketCount > 1 && wordCount >= 1) || (bracketCount < wordCount))
+          {
+            result += " " + pipeChar;
+          }
+          
+          document.getElementById("formatedText").innerHTML=result; 
+
+        }
+      } 
+    }
+
+    document.addEventListener('DOMContentLoaded', function () 
+    {
+
+      var checkbox = document.querySelector('input[type="checkbox"]');
+
+      checkbox.addEventListener('change', function () 
+      {
+        if (checkbox.checked) 
+        {
+          // switch on
+          switchCheck = true;
+        } 
+        else 
+        {
+          // switch off
+          switchCheck = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
